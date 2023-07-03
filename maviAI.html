@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./css/style.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<title>Mavi</title>
+</head>
+
+<body>
+	<section class="main">
+		<!-- weather -->
+		<div class="widget visually-hidden">
+			<p class="city-name"></p>
+			<p class="city-temp"></p>
+			<p class="weather-conditions"></p>
+		</div>
+		<!-- exchange -->
+		<p class="rate visually-hidden"></p>
+		<!-- assistant -->
+		<select class="visually-hidden" id="select"></select>
+		<div class="image-container">
+			<div class="image">
+				<img src="./img/halo.gif" alt="mavi">
+			</div>
+		</div>
+		<div class="input">
+			<button class="talk pulse"><i class="fas fa-microphone-alt"></i></button>
+		</div>
+	</section>
+	<script src="./js/maviAI.js"></script>
+</body>
+
+</html>

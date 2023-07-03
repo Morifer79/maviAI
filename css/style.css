@@ -1,0 +1,84 @@
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	border: 0;
+	padding: 0;
+
+	white-space: nowrap;
+	clip-path: inset(100%);
+	clip: rect(0 0 0 0);
+	overflow: hidden;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+
+}
+
+.main {
+	min-height: 100vh;
+	position: relative;
+	width: 100%;
+	background-image: url('../img/cosmo.jpg');
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.image-container {
+	padding: 10px;
+}
+
+.image-container .image {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.image img {
+	width: 500px;
+	align-items: center;
+	box-shadow: 0px 0px 15px 10px rgba(0, 0, 0, 0.8);
+	border-radius: 20px;
+}
+
+.main .talk {
+	background: transparent;
+	outline: none;
+	border: none;
+	width: 50px;
+	height: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 40px;
+	cursor: pointer;
+}
+
+.pulse {
+	margin-top: 50px;
+	background: none;
+	border: 2px solid;
+	border-radius: 50%;
+	color: #118ee8;
+	transition: 0.25s;
+}
+
+.pulse:hover,
+.pulse:focus {
+	animation: pulse 1s;
+	box-shadow: 0 0 0 1.5em transparent;
+	color: #fff;
+}
+
+@keyframes pulse {
+	0% {
+		box-shadow: 0 0 0 0 #fff;
+	}
+}
