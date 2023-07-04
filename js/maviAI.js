@@ -1,4 +1,4 @@
-const btn = document.querySelector('.talk');
+const imgBtn = document.querySelector('.image-btn');
 const cityName = document.querySelector('.city-name');
 const cityTemp = document.querySelector('.city-temp');
 const weatherConditions = document.querySelector('.weather-conditions');
@@ -56,21 +56,10 @@ recognition.onresult = (event) => {
 	speakThis(transcript.toLowerCase());
 }
 
-// запуск слушателя с кнопки
-btn.addEventListener('click', () => {
+// запуск слушателя с клика по изображению
+imgBtn.addEventListener('click', () => {
 	recognition.start();
 })
-
-//Изменение цвета кнопки на время действия распознавателя
-function changeColor() {
-	// Изменение цвета кнопки
-	btn.style.color = "white";
-	// Установка задержки на 4 секунды (4000 миллисекунд)
-	setTimeout(function() {
-		// Возвращение исходного цвета кнопки
-		btn.style.color = "";
-	}, 4800);
-}
 
 // создание функции алгоритмов интересующих сценариев
 function speakThis(message) {
@@ -143,7 +132,7 @@ function speakThis(message) {
 		const finalText = "Вот что я нашла в википедии";
 		speech.text = finalText;
 	}
-	//запрос курса доллара (1-й запрос заполняет поля, 2-й читает значение... нужно переделать)
+	//запрос курса доллара
 	else if (message.includes('курс') || message.includes('валюта')) {
 		fetch('https://v6.exchangerate-api.com/v6/a004bc09006c07f850d92fe8/pair/USD/UAH')
 		.then(function (resp) {return resp.json()})
@@ -166,7 +155,7 @@ function speakThis(message) {
 		const finalText = "sinoptik открыт";
 		speech.text = finalText;
 	}
-	//запрос текущей погоды (Одесса) (1-й запрос заполняет поля, 2-й читает значение... нужно переделать)
+	//запрос текущей погоды (Одесса)
 	else if (message.includes('погода') || message.includes('прогноз')) {
 		fetch('https://api.openweathermap.org/data/2.5/weather?id=698740&appid=f5cd92e902f0cc104e5d8fd7e497b1ee')
 		.then(function (resp) {return resp.json()})
@@ -185,6 +174,10 @@ function speakThis(message) {
 			speech.text = finalText;
 			speechSynthesis.speak(speech);
 		});
+	}
+	//закрытие калькулятора
+	else if (message.includes('закрой окно')) {
+		window.close()
 	}
 	//дефолтный ответ в случае плохого распознавания или несуществующей команды
 	else {
