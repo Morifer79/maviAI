@@ -3,6 +3,19 @@ const cityName = document.querySelector('.city-name');
 const cityTemp = document.querySelector('.city-temp');
 const weatherConditions = document.querySelector('.weather-conditions');
 const rate = document.querySelector('.rate');
+const conditionsDescription = {
+	"overcast clouds": 'пасмурно',
+	"broken clouds": 'облачно с прояснениями',
+	"few clouds": 'малая облачность',
+	"scattered clouds": 'местами облачно',
+	"light rain": 'небольшой дождь',
+	"moderate rain": 'умеренный дождь',
+	"heavy intensity rain": 'сильный ливень',
+	"rain and snow": 'дождь со снегом',
+	"light snow": 'небольшой снег',
+	"snow": 'снег',
+	"clear sky": 'ясное небо'
+}
 
 // получение списка голосов
 let voices = speechSynthesis.getVoices();
@@ -133,12 +146,13 @@ function speakThis(message) {
 	//запрос курса доллара (1-й запрос заполняет поля, 2-й читает значение... нужно переделать)
 	else if (message.includes('курс') || message.includes('валюта')) {
 		fetch('https://v6.exchangerate-api.com/v6/a004bc09006c07f850d92fe8/pair/USD/UAH')
-			.then(function (resp) {return resp.json()})
-			.then(function (data) {
-				rate.textContent = data.conversion_rate.toFixed(2);
-			});
-		const finalText = `${rate.textContent}`;
-		speech.text = finalText;
+		.then(function (resp) {return resp.json()})
+		.then(function (data) {
+			rate.textContent = data.conversion_rate.toFixed(2);
+			const finalText = `${rate.textContent}`;
+			speech.text = finalText;
+			speechSynthesis.speak(speech);
+		});
 	}
 	//открытие сайта погоды gismeteo (Одесса)
 	else if (message.includes('gismeteo')) {
@@ -155,34 +169,22 @@ function speakThis(message) {
 	//запрос текущей погоды (Одесса) (1-й запрос заполняет поля, 2-й читает значение... нужно переделать)
 	else if (message.includes('погода') || message.includes('прогноз')) {
 		fetch('https://api.openweathermap.org/data/2.5/weather?id=698740&appid=f5cd92e902f0cc104e5d8fd7e497b1ee')
-			.then(function (resp) {return resp.json()})
-			.then(function (data) {
-				cityName.textContent = data.name;
-				cityTemp.innerHTML = Math.round(data.main.temp - 273) + '&deg;';
-				weatherConditions.textContent = data.weather[0]['description'];
-			});
-		if (cityName.textContent === 'Odesa') {
-			cityName.textContent = 'A desa';
-		}
-		const conditionsDescription = {
-			"overcast clouds": 'пасмурно',
-			"broken clouds": 'облачно с прояснениями',
-			"few clouds": 'малая облачность',
-			"scattered clouds": 'местами облачно',
-			"light rain": 'небольшой дождь',
-			"moderate rain": 'умеренный дождь',
-			"heavy intensity rain": 'сильный ливень',
-			"rain and snow": 'дождь со снегом',
-			"light snow": 'небольшой снег',
-			"snow": 'снег',
-			"clear sky": 'ясное небо'
-		}
-		if (weatherConditions.textContent in conditionsDescription) {
-			let condition = conditionsDescription[weatherConditions.textContent]
-			weatherConditions.textContent = condition;
-		}
-		const finalText = `${cityName.textContent} ${cityTemp.textContent} ${weatherConditions.textContent}`;
-		speech.text = finalText;
+		.then(function (resp) {return resp.json()})
+		.then(function (data) {
+			cityName.textContent = data.name;
+			if (cityName.textContent === 'Odesa') {
+				cityName.textContent = 'A desa';
+			}
+			cityTemp.innerHTML = Math.round(data.main.temp - 273) + '&deg;';
+			weatherConditions.textContent = data.weather[0]['description'];
+			if (weatherConditions.textContent in conditionsDescription) {
+				let condition = conditionsDescription[weatherConditions.textContent]
+				weatherConditions.textContent = condition;
+			}
+			const finalText = `${cityName.textContent} ${cityTemp.textContent} ${weatherConditions.textContent}`;
+			speech.text = finalText;
+			speechSynthesis.speak(speech);
+		});
 	}
 	//дефолтный ответ в случае плохого распознавания или несуществующей команды
 	else {
