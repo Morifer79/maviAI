@@ -3,7 +3,6 @@ const cityName = document.querySelector('.city-name');
 const cityTemp = document.querySelector('.city-temp');
 const weatherConditions = document.querySelector('.weather-conditions');
 const rate = document.querySelector('.rate');
-let sum = 0;
 
 // получение списка голосов
 let voices = speechSynthesis.getVoices();
@@ -28,8 +27,6 @@ function speak(sentence) {
 	text_speak.lang = "ru-RU";
 	const voice = voices[select.value];
 	text_speak.voice = voice;
-	text_speak.rate = 1;
-	text_speak.pitch = 1;
 
 	new SpeechSynthesisUtterance(text_speak);
 }
@@ -50,6 +47,17 @@ recognition.onresult = (event) => {
 btn.addEventListener('click', () => {
 	recognition.start();
 })
+
+//Изменение цвета кнопки на время действия распознавателя
+function changeColor() {
+	// Изменение цвета кнопки
+	btn.style.color = "white";
+	// Установка задержки на 4 секунды (4000 миллисекунд)
+	setTimeout(function() {
+		// Возвращение исходного цвета кнопки
+		btn.style.color = "";
+	}, 4800);
+}
 
 // создание функции алгоритмов интересующих сценариев
 function speakThis(message) {
@@ -111,34 +119,23 @@ function speakThis(message) {
 		speech.text = finalText;
 	}
 	//поиск информации в Google по запросу
-	else if (message.includes('что такое') || message.includes('кто такой') || message.includes('кто такая') || message.includes('кто такие')) {
+	else if (message.includes('что такое') || message.includes('кто такой') || message.includes('кто такие')) {
 		window.open(`https://google.com/search?q=${message.replace(" ", "+")}`, "_blank");
-		const finalText = "Вот что я нашла в интернете по этому поводу";
+		const finalText = "Вот что я нашла в интернете по-поводу " + message;
 		speech.text = finalText;
 	}
-	//поиск в Wikipedia (убогий...нужно переделать)
+	//поиск в Wikipedia (убогий..нужно переделать)
 	else if (message.includes('википедия')) {
 		window.open(`https://ru.wikipedia.org/wiki/${message.replace("википедия", "")}`, "_blank");
 		const finalText = "Вот что я нашла в википедии";
 		speech.text = finalText;
 	}
-	//запрос курса доллара (1-й запрос заполняет поле, 2-й читает значение... нужно переделать)
+	//запрос курса доллара (1-й запрос заполняет поля, 2-й читает значение... нужно переделать)
 	else if (message.includes('курс') || message.includes('валюта')) {
 		fetch('https://v6.exchangerate-api.com/v6/a004bc09006c07f850d92fe8/pair/USD/UAH')
 			.then(function (resp) {return resp.json()})
 			.then(function (data) {
 				rate.textContent = data.conversion_rate.toFixed(2);
-			});
-		const finalText = `${rate.textContent}`;
-		speech.text = finalText;
-	}
-	//запрос конвертации доллара ('число'+долларов покажет сумму в гривне)
-	else if (message.includes(`доллары ${sum}`)) {
-		fetch(`https://v6.exchangerate-api.com/v6/a004bc09006c07f850d92fe8/pair/USD/UAH/${sum}`)
-			.then(function (resp) {return resp.json()})
-			.then(function (data) {
-				console.log(data);
-				rate.textContent = data.conversion_result.toFixed(2);
 			});
 		const finalText = `${rate.textContent}`;
 		speech.text = finalText;
@@ -193,9 +190,6 @@ function speakThis(message) {
 	}
 	const voice = voices[select.value];
 	speech.voice = voice;
-	speech.volume = 1;
-	speech.pitch = 1;
-	speech.rate = 1;
 
 	window.speechSynthesis.speak(speech);
 }
