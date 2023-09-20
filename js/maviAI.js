@@ -123,7 +123,7 @@ function speakThis(message) {
 	//поиск информации в Google по запросу
 	else if (message.includes('что такое') || message.includes('кто такой') || message.includes('кто такая') || message.includes('кто такие')) {
 		window.open(`https://google.com/search?q=${message.replace(" ", "+")}`, "_blank");
-		const finalText = "Вот что я нашла в интернете по-поводу " + message;
+		const finalText = "Вот что я нашла в интернете по поводу " + message;
 		speech.text = finalText;
 	}
 	//поиск в Wikipedia (убогий..нужно переделать)
